@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animes - Tokio Site</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <style>
+        /* --- Contenido de css/globals.css --- */
+
+        /* 1. IMPORTACIÓN DE FUENTES */
+        @import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&family=M+PLUS+Rounded+1c:wght@400;700&display=swap');
+
+        /*
+        Línea Gráfica:
+        - Estética minimalista, japonesa, colores pasteles.
+        - Rojo: #b10302
+        - Verde: #8c9657
+        - Beige: #f4e0b2
+        - Fondo: #fefdfa 
+        */
+
+        :root {
+            --color-primary: #b10302;
+            --color-secondary: #8c9657;
+            --color-accent: #f4e0b2;
+            --color-background: #fefdfa;
+            --color-white: #ffffff;
+            --color-text: #4a4a4a;
+            --color-text-muted: #8c9657; /* Usando el verde para texto 'muted' */
+            
+            --font-body: 'M PLUS Rounded 1c', sans-serif;
+            --font-heading: 'Gochi Hand', cursive;
+        }
+
+        /* 2. RESET Y GLOBALES */
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            margin: 0;
+            padding-top: 60px; /* Espacio para la nav fija */
+        }
+        body::before {
+              content: '';
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100vw;
+              height: 100vh;
+              background-image: url('fondo 5.jpg');
+              background-size: cover;
+              background-position: center;
+              opacity: 0.30;
+              z-index: 0;
+              pointer-events: none;
+        }
+
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            color: var(--color-primary);
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--color-text);
+            border-bottom: 2px solid var(--color-accent);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            color: var(--color-text);
+        }
+
+        a {
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .muted {
+            color: var(--color-text-muted);
+            font-size: 0.95rem;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        /* 3. BARRA DE NAVEGACIÓN (SOBREESCRIBIENDO MATERIALIZE) */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            /* Efecto de vidrio esmerilado para el fondo */
+            background-color: rgba(254, 253, 250, 0.9); /* Fondo body con transparencia */
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* Override de Materialize */
+        nav .nav-wrapper {
+            background-color: transparent !important; 
+            padding: 0 1rem;
+        }
+
+        nav .brand-logo {
+            color: var(--color-primary) !important;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 1.8rem !important;
+        }
+
+        /* 4. ESTILOS PARA MENÚ HAMBURGUESA CUSTOM */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            float: right; 
+        }
+
+        .nav-menu li a {
+            display: block;
+            padding: 0 15px;
+            line-height: 60px; /* Altura de la nav (de Materialize) */
+            color: var(--color-text) !important;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu li a:hover {
+            color: var(--color-primary) !important;
+            text-decoration: none;
+        }
+
+        .nav-menu li a.active {
+            color: var(--color-primary) !important;
+        }
+
+        /* Línea inferior para el item activo */
+        .nav-menu li a.active::after {
+            content: '';
+            display: block;
+            width: 70%;
+            height: 3px;
+            background: var(--color-primary);
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* 5. LÓGICA DEL HAMBURGUESA (MÓVIL) */
+        .nav-toggle {
+            display: none; /* Oculta el checkbox */
+        }
+
+        .nav-hamburger {
+            display: none; /* Oculto en desktop */
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 101;
+        }
+
+        .nav-hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--color-text);
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* 6. RESPONSIVE NAV */
+        @media (max-width: 992px) {
+            .nav-menu {
+                display: none; /* Ocultar menú desktop */
+                flex-direction: column;
+                position: absolute;
+                top: 60px; /* Debajo de la nav */
+                left: 0;
+                width: 100%;
+                background-color: var(--color-background);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+            
+            .nav-menu li a {
+                line-height: 50px;
+                width: 100%;
+                text-align: center;
+                border-bottom: 1px solid var(--color-accent);
+            }
+            
+            .nav-menu li a.active::after {
+                display: none; /* Quitar línea en móvil */
+            }
+
+            .nav-hamburger {
+                display: block; /* Mostrar hamburger */
+            }
+
+            /* Lógica del toggle */
+            .nav-toggle:checked ~ .nav-menu {
+                display: flex; /* Mostrar menú al clickear */
+            }
+            
+            .nav-toggle:checked ~ .nav-hamburger span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+            .nav-toggle:checked ~ .nav-hamburger span:nth-child(2) {
+                opacity: 0;
+            }
+            .nav-toggle:checked ~ .nav-hamburger span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
+            }
+        }
+        
+
+        /* --- Contenido de css/theme-vintage.css --- */
+
+        /* 1. LISTA DE ANIMES */
+
+        .anime-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .anime-card {
+            background: var(--color-white);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+            overflow: hidden; /* Para que la imagen respete el borde redondeado */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .anime-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .anime-card img {
+            width: 100%;
+            height: 280px; /* Altura fija para uniformidad */
+            object-fit: cover; /* Asegura que la imagen cubra el espacio sin deformarse */
+        }
+
+        /* Contenido de la tarjeta */
+        .anime-card h3 {
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--color-primary); /* Títulos de tarjeta en rojo */
+            margin-bottom: 5px;
+            padding: 0 1rem;
+            padding-top: 1rem;
+        }
+
+        .anime-card .muted {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            padding: 0 1rem;
+            flex-grow: 1; /* Empuja el div espaciador hacia abajo */
+        }
+
+        /* El div vacío en tu HTML */
+        .anime-card div[style*="margin-top:8px"] {
+            margin-top: 0; /* Reseteamos el estilo en línea */
+            padding-bottom: 1rem; /* Le damos un uso como padding inferior */
+        }
+
+
+        /* 2. FOOTER */
+
+        .site-footer {
+            background-color: var(--color-accent); /* Color beige de la paleta */
+            color: var(--color-text);
+            padding-top: 3rem;
+            margin-top: 3rem;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap; /* Para que en móvil se apilen */
+            justify-content: space-between;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .footer-left {
+            flex: 2; /* Ocupa más espacio */
+            min-width: 250px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        /* Recreando el logo circular rojo con CSS */
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            min-width: 50px;
+            background-color: var(--color-primary);
+            border-radius: 50%;
+        }
+        /* Escribiendo "TOKIO" dentro del div .footer-logo */
+        .footer-logo::before {
+            content: "TOKIO";
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 0.7rem; /* Pequeño para que quepa */
+            color: var(--color-white);
+            text-align: center;
+            line-height: 1;
+        }
+
+        .footer-brand h3 {
+            font-family: var(--font-body);
+            font-size: 1.5rem;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .socials {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        /* **PASO 3: Ajuste CSS para iconos** */
+        .socials a {
+            display: inline-flex; /* Usamos flex para centrar el icono */
+            align-items: center;
+            justify-content: center;
+            width: 32px; /* Un poco más grande para el icono */
+            height: 32px;
+            background-color: rgba(0,0,0,0.1);
+            color: var(--color-text);
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            font-size: 1rem; /* Tamaño del icono */
+        }
+        /* Quitamos estilos de texto que ya no aplican */
+        /* .socials a { font-size: 0.8rem; font-weight: 700; line-height: 30px; text-align: center;} */
+
+
+        .socials a:hover {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .footer-col {
+            flex: 1; /* Ocupan 1 fracción del espacio */
+            min-width: 160px;
+        }
+
+        .footer-col h4 {
+            font-family: var(--font-body);
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-col a {
+            color: var(--color-text);
+            text-decoration: none;
+        }
+        .footer-col a:hover {
+            color: var(--color-primary);
+            text-decoration: underline;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--color-text-muted);
+            color: var(--color-text-muted);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+        }
+
+        .lang-btn:hover {
+            background: var(--color-text-muted);
+            color: var(--color-white);
+        }
+    
+        .footer-bottom {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            margin-top: 2rem;
+            background-color: rgba(0, 0, 0, 0.05); /* Un separador sutil */
+            font-size: 0.9rem;
+        }
+
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="index.html" class="brand-logo" style="display:flex;align-items:center;gap:10px;">
+                <img src="IMG_1870-removebg-preview.png" alt="Logo Tokio" style="height:90px;width:auto;object-fit:contain;">
+            </a>
+            <input id="nav-toggle" class="nav-toggle" type="checkbox">
+            <label for="nav-toggle" class="nav-hamburger" aria-hidden="true">
+                <span></span><span></span><span></span>
+            </label>
+            <ul class="nav-menu">
+                <li><a href="index.html">Inicio</a></li> 
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="animes.html" class="active">Animes</a></li>
+                <li><a href="movies.html">Movies</a></li>
+                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="recommendations.html">Recommendations</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Animes</h1>
+
+        <section>
+            <h2>Shōnen</h2>
+            <p class="muted">Para adolescentes varones: acción, aventuras y amistad.</p>
+            <div class="anime-list">
+                <div class="anime-card">
+                    <img src="https://cdn.shopify.com/s/files/1/0773/0826/4786/files/dc064b8caab3091db0362fcbea0662889c2e26116959c3d47a6b946169d87172.jpg?v=1736415070" alt="One Piece">
+                    <h3>One Piece</h3>
+                    <p class="muted">La búsqueda del tesoro y la libertad.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="Naruto.jpg" alt="Naruto">
+                    <h3>Naruto</h3>
+                    <p class="muted">Superación y lazos entre ninjas.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="BNHA - Season 7.jpg" alt="boku no hero">
+                    <h3>Boku no Hero</h3>
+                    <p class="muted">Héroes y entrenamiento en la Academia U.A.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="Dragon Ball.jpg" alt="Dragon Ball">
+                    <h3>Dragon Ball</h3>
+                    <p class="muted">Combates épicos y aventura clásica.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="One Punch Man.jpg" alt="One Punch Man">
+                    <h3>One Punch Man</h3>
+                    <p class="muted">Parodia y acción sobre un héroe invencible.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Shōjo</h2>
+            <p class="muted">Para adolescentes mujeres: romance, drama y relaciones.</p>
+            <div class="anime-list">
+                <div class="anime-card">
+                    <img src="Sailor Moon.jpg" alt="Sailor Moon">
+                    <h3>Sailor Moon</h3>
+                    <p class="muted">Magia, amistad y romance.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="Fruits Basket.jpg" alt="Fruits Basket">
+                    <h3>Fruits Basket</h3>
+                    <p class="muted">Drama familiar y relaciones emocionales.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="Toradora!.jpg" alt="Toradora">
+                    <h3>Toradora!</h3>
+                    <p class="muted">Romance adolescente con toques cómicos.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="kimi ni todoke.jpg" alt="kimi ni todoke">
+                    <h3>Kimi ni Todoke</h3>
+                    <p class="muted">Ternura y crecimiento personal.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="Clannad.jpg" alt="Clannad">
+                    <h3>Clannad</h3>
+                    <p class="muted">Romance, drama y familia.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Seinen</h2>
+            <p class="muted">Para adultos: tramas más complejas y maduras.</p>
+            <div class="anime-list">
+                <div class="anime-card">
+                    <img src="Berserk.jpg" alt="Berserk">
+                    <h3>Berserk</h3>
+                    <p class="muted">Oscuro, épico y psicológico.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="Monster.jpg" alt="Monster">
+                    <h3>Monster</h3>
+                    <p class="muted">Thriller psicológico y moralidad.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="Ghost in the Shell.jpg" alt="Ghost in the hell">
+                    <h3>Ghost in the Shell</h3>
+                    <p class="muted">Ciencia ficción y filosofía.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="Cowboy Bebop.jpg" alt="Cowboy Bebop">
+                    <h3>Cowboy Bebop</h3>
+                    <p class="muted">Estética madura y episodios autoconclusivos.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="Paranoia Agent.jpg" alt="Paranoia Agent">
+                    <h3>Paranoia Agent</h3>
+                    <p class="muted">Surrealismo y crítica social.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Josei</h2>
+            <p class="muted">Para mujeres adultas: historias realistas y románticas.</p>
+            <div class="anime-list">
+                <div class="anime-card">
+                    <img src="Nodame Cantabile.jpg" alt="nodame Cantabile">
+                    <h3>Nodame Cantabile</h3>
+                    <p class="muted">Música, relaciones adultas y crecimiento.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="Chihayafuru.jpg" alt="Chihayafuru">
+                    <h3>Chihayafuru</h3>
+                    <p class="muted">Pasión, competición y amistad.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="Honey and Clover.jpg" alt="Honey and Clover">
+                    <h3>Honey and Clover</h3>
+                    <p class="muted">Romance y vida universitaria.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="Kuragehime.jpg" alt="Kuragehime">
+                    <h3>Kuragehime</h3>
+                    <p class="muted">Comedia romántica con enfoque adulto.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                     <img src="Natsuyuki Rendezvous.jpg" alt="Natsuyuki Rendezvous">
+                    <h3>Natsuyuki Rendezvous</h3>
+                    <p class="muted">Romance maduro y elementos sobrenaturales.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Mecha</h2>
+            <p class="muted">Anime donde los protagonistas usan robots gigantes.</p>
+            <div class="anime-list">
+                <div class="anime-card">
+                    <img src="Mobile Suit Gundam.jpg" alt="Mobile Suit Gundam">
+                    <h3>Mobile Suit Gundam</h3>
+                    <p class="muted">Pilotos, política y guerra mecanizada.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="Neon Genesis Evangelion.jpg" alt="Neon Genesis Evangelion">
+                    <h3>Neon Genesis Evangelion</h3>
+                    <p class="muted">Psicología, mecha y simbolismo.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="Gurren Lagann.jpg" alt="Gurren Lagann">
+                    <h3>Gurren Lagann</h3>
+                    <p class="muted">Espíritu de superación y mechas exagerados.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                    <img src="Code Geass.jpg" alt="Code Geass">
+                    <h3>Code Geass</h3>
+                    <p class="muted">Estrategia, política y mechas tácticos.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+                <div class="anime-card">
+                   <img src="RahXephon.jpg" alt="RahXephon">
+                    <h3>RahXephon</h3>
+                    <p class="muted">Misterio, música y mecha.</p>
+                    <div style="margin-top:8px"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <div class="footer-left">
+                <div class="footer-brand">
+                    <div class="footer-logo"></div>
+                    <div>
+                        <h3>TOKIO</h3>
+                        <p class="muted">Te damos la bienvenida a TOKIO, tu destino para descubrir y disfrutar el mejor anime clásico y moderno.</p>
+                        <div class="socials">
+                            <a href="https://www.youtube.com" aria-label="YouTube" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
+                            <a href="https://www.facebook.com" aria-label="Facebook" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.instagram.com" aria-label="Instagram" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                            <a href="https://x.com" aria-label="X" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a> 
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Explorador</h4>
+                <ul>
+                    <li><a href="#">Explorar lo más popular</a></li>
+                    <li><a href="#">Explorar los Simulcasts</a></li>
+                    <li><a href="#">Calendario de lanzamientos</a></li>
+                    <li><a href="#">Noticias</a></li>
+                    <li><a href="#">Juegos</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Recursos</h4>
+                <ul>
+                    <li><a href="#">Acerca</a></li>
+                    <li><a href="#">Hazte con nuestras aplicaciones</a></li>
+                    <li><a href="#">Empleo</a></li>
+                    <li><a href="#">Centro de ayuda</a></li>
+                    <li><a href="#">Contacto de prensa</a></li>
+                </ul>
+                <div style="margin-top:12px;"><button class="lang-btn">Español ▾</button></div>
+            </div>
+        </div>
+    <div class="footer-bottom">© 2025 TOKIO — Todos los derechos reservados</div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
