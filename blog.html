@@ -109,6 +109,68 @@
             margin-bottom: 3rem;
         }
 
+        /* ANIMACIONES SCROLL REVEAL */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mejoras de contraste y transiciones */
+        a {
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        a:hover {
+            text-shadow: 0 2px 4px rgba(177, 3, 2, 0.2);
+        }
+
+        .card {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+        }
+
+        .card:hover {
+            filter: brightness(1.02) !important;
+        }
+
         /* 3. BARRA DE NAVEGACIÓN (SOBREESCRIBIENDO MATERIALIZE) */
         nav {
             position: fixed;
@@ -489,6 +551,126 @@
             background-color: rgba(0, 0, 0, 0.05);
             font-size: 0.9rem;
         }
+
+        /* ESTILOS PARA CHAT */
+        .chat-container {
+            background: var(--color-white);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+            display: flex;
+            flex-direction: column;
+            height: 450px;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 0.8rem;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .chat-message.user {
+            justify-content: flex-end;
+        }
+
+        .chat-message.bot {
+            justify-content: flex-start;
+        }
+
+        .chat-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-accent);
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .chat-message.user .chat-avatar {
+            background: var(--color-primary);
+            color: var(--color-white);
+            order: 2;
+        }
+
+        .chat-bubble {
+            max-width: 70%;
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .chat-message.user .chat-bubble {
+            background: var(--color-primary);
+            color: var(--color-white);
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-message.bot .chat-bubble {
+            background: var(--color-accent);
+            color: var(--color-text);
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem;
+            border-top: 1px solid var(--color-accent);
+            background: var(--color-background);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--color-accent);
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: var(--color-text);
+            transition: border-color 0.3s ease;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px rgba(177, 3, 2, 0.1);
+        }
+
+        .chat-send-btn {
+            padding: 0.8rem 1.2rem;
+            background: var(--color-primary);
+            color: var(--color-white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .chat-send-btn:hover {
+            background: #c90403;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(177, 3, 2, 0.3);
+        }
+
+        .chat-send-btn:active {
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
@@ -515,9 +697,13 @@
     <div class="container">
         <div class="post">
             <div class="main">
-                <h1>Blog</h1>
+                <h1 class="reveal">Blog Tokio</h1>
+                
+                <!-- TEMAS DEL DÍA -->
+                <h2 class="reveal" style="margin-top: 2rem;">Temas del Día</h2>
+                <p class="muted reveal">Los animes y temas que están de moda hoy</p>
                 <div class="row">
-                    <div class="card">
+                    <div class="card reveal">
                         <div class="card-image">
                             <img src="https://www.watchmojo.com/uploads/blipthumbs/Fi-T-Top10-One-Piece-Characters-720p30_480.jpg" alt="One Piece">
                         </div>
@@ -530,7 +716,7 @@
                         </div>
                     </div>
 
-                    <div class="card">
+                    <div class="card reveal">
                         <div class="card-image">
                             <img src="https://imgsrv.crunchyroll.com/cdn-cgi/image/fit=cover,format=auto,quality=85,width=1920/keyart/GR19V7816-backdrop_wide" alt="Dragon Ball">
                         </div>
@@ -543,7 +729,7 @@
                         </div>
                     </div>
 
-                    <div class="card">
+                    <div class="card reveal">
                         <div class="card-image">
                             <img src="https://i.blogs.es/0afb29/bnha_anime/1366_2000.jpeg" alt="Boku no Hero">
                         </div>
@@ -555,8 +741,13 @@
                              <a href="#">Leer más</a>
                         </div>
                     </div>
+                </div>
 
-                    <div class="card">
+                <!-- LO MÁS RECIENTE -->
+                <h2 class="reveal" style="margin-top: 3rem;">Lo Más Reciente</h2>
+                <p class="muted reveal">Últimas publicaciones del blog</p>
+                <div class="row">
+                    <div class="card reveal">
                         <div class="card-image">
                             <img src="https://fotografias-neox.atresmedia.com/clipping/cmsimages02/2021/07/09/43A2FF28-B577-4FF6-BD97-9F65A598D6C6/98.jpg?crop=1920,1080,x0,y0&width=1900&height=1069&optimize=high&format=webply" alt="Kimetsu no Yaiba">
                         </div>
@@ -569,7 +760,7 @@
                         </div>
                     </div>
 
-                    <div class="card">
+                    <div class="card reveal">
                         <div class="card-image">
                             <img src="https://i.pinimg.com/736x/12/40/64/124064eaccc5555b86d4e1eb44de437a.jpg" alt="Naruto">
                         </div>
@@ -582,7 +773,7 @@
                         </div>
                     </div>
 
-                    <div class="card">
+                    <div class="card reveal">
                         <div class="card-image">
                             <img src="https://sm.ign.com/ign_latam/screenshot/default/chainsaw-galeria_y8dk.jpg" alt="Chainsaw Man (Pochita)">
                         </div>
@@ -593,6 +784,66 @@
                         <div class="card-action">
                              <a href="#">Leer más</a>
                         </div>
+                    </div>
+                </div>
+
+                <!-- LO MEJOR -->
+                <h2 class="reveal" style="margin-top: 3rem;">Lo Mejor del Blog</h2>
+                <p class="muted reveal">Artículos más populares y comentados</p>
+                <div class="row">
+                    <div class="card reveal">
+                        <div class="card-image">
+                            <img src="https://www.watchmojo.com/uploads/blipthumbs/Fi-T-Top10-One-Piece-Characters-720p30_480.jpg" alt="One Piece">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title">One Piece: viaje y legado</span>
+                            <p>One Piece es una odisea de amistad, aventura y misterio que ha definido generaciones. Desde los comienzos de Luffy hasta los arcos más actuales, su mezcla de humor y emoción es única.</p>
+                        </div>
+                        <div class="card-action">
+                            <a href="#">Leer más</a>
+                        </div>
+                    </div>
+
+                    <div class="card reveal">
+                        <div class="card-image">
+                            <img src="https://imgsrv.crunchyroll.com/cdn-cgi/image/fit=cover,format=auto,quality=85,width=1920/keyart/GR19V7816-backdrop_wide" alt="Dragon Ball">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title">Dragon Ball: impacto en la cultura</span>
+                            <p>Dragon Ball sentó las bases del shōnen de acción con combates épicos y personajes icónicos. Su influencia en el anime y el fandom es innegable.</p>
+                        </div>
+                        <div class="card-action">
+                             <a href="#">Leer más</a>
+                        </div>
+                    </div>
+
+                    <div class="card reveal">
+                        <div class="card-image">
+                            <img src="https://i.blogs.es/0afb29/bnha_anime/1366_2000.jpeg" alt="Boku no Hero">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title">Boku no Hero: héroes y corazón</span>
+                            <p>My Hero Academia explora la idea del heroísmo moderno con personajes complejos y una narrativa que combina espectáculo y emoción.</p>
+                        </div>
+                        <div class="card-action">
+                             <a href="#">Leer más</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHAT INTERACTIVO -->
+                <h2 class="reveal" style="margin-top: 3rem;">💬 Chat de Comunidad</h2>
+                <p class="muted reveal">Conversa con otros fans sobre los temas del blog</p>
+                <div class="chat-container reveal">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="chat-message bot">
+                            <div class="chat-avatar">🤖</div>
+                            <div class="chat-bubble">¡Bienvenido al chat de Tokio! Aquí puedes discutir tus animes favoritos con otros fans. ¡Diviértete! 🎌</div>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chatInput" class="chat-input" placeholder="Escribe tu comentario aquí..." maxlength="200">
+                        <button id="chatSend" class="chat-send-btn"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
             </div>
@@ -651,5 +902,220 @@
     </footer>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+    <script>
+        // Scroll reveal usando Intersection Observer (compatible y robusto)
+        (function(){
+            const reveals = document.querySelectorAll('.reveal');
+            
+            // Si Intersection Observer está disponible, usar eso (mejor rendimiento)
+            if('IntersectionObserver' in window){
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if(entry.isIntersecting){
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target); // dejar de observar una vez visible
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px' // activar 50px antes de entrar completamente
+                });
+                
+                reveals.forEach(el => observer.observe(el));
+            } else {
+                // Fallback para navegadores antiguos
+                const onScroll = () => {
+                    const windowH = window.innerHeight;
+                    reveals.forEach(el => {
+                        const rect = el.getBoundingClientRect();
+                        if(rect.top < windowH - 80){
+                            el.classList.add('visible');
+                        }
+                    });
+                };
+                window.addEventListener('scroll', onScroll);
+                onScroll(); // ejecutar al cargar
+            }
+        })();
+
+        // Chat interactivo mejorado con IA básica
+        (function(){
+            const chatMessages = document.getElementById('chatMessages');
+            const chatInput = document.getElementById('chatInput');
+            const chatSend = document.getElementById('chatSend');
+            
+            // Base de conocimiento del bot sobre anime
+            const knowledgeBase = {
+                // Preguntas sobre géneros
+                'shonen|accion|pelea|batalla': {
+                    keywords: ['One Piece', 'Naruto', 'Dragon Ball', 'My Hero Academia', 'Bleach'],
+                    responses: [
+                        '¡Ah, te encantan los anime de acción! Te recomendaría One Piece, Naruto o Dragon Ball. ¿Cuál es tu favorito? 🔥',
+                        'El shōnen es lo mejor para adrenalina. ¿Ya viste My Hero Academia? ¡Es increíble! 💪',
+                        'Los animes de pelea son emocionantes. ¿Prefieres magia, artes marciales o poderes especiales? 🥋'
+                    ]
+                },
+                'romance|amor|relacion|pareja': {
+                    keywords: ['Fruits Basket', 'Toradora', 'Kimi ni Todoke', 'Your Name'],
+                    responses: [
+                        '¡Buscas romance! Te recomendaría Toradora! o Fruits Basket, son hermosos 💕',
+                        'El romance en anime es especial. ¿Prefieres comedy romance o drama? 🌸',
+                        'Hay excelentes animes románticos. ¿Ya viste Your Name? ¡Es una obra maestra! 💫'
+                    ]
+                },
+                'terror|horror|miedo|suspenso': {
+                    keywords: ['Another', 'Higurashi', 'Tokyo Ghoul', 'Psycho-Pass'],
+                    responses: [
+                        '¡Horror de anime! Tienes que ver Another o Higurashi, son muy intensos 😱',
+                        'Tokyo Ghoul es un clásico del horror. ¿Tienes el corazón fuerte? 🖤',
+                        'Psycho-Pass mezcla ciencia ficción con misterio oscuro. ¿Te interesa? 🔮'
+                    ]
+                },
+                'comedia|humor|divertido': {
+                    keywords: ['Gintama', 'Nichijou', 'KonoSuba', 'Miss Kobayashi'],
+                    responses: [
+                        '¡Quieres reír! Gintama es hilariante, uno de los mejores 😂',
+                        'Nichijou es la comedia pura. ¿Necesitas algo que te haga reír a carcajadas? 🤣',
+                        'KonoSuba es una parodia perfecta del género fantasy. ¡Es genial! 🎭'
+                    ]
+                },
+                'drama|emocional|triste|llorar': {
+                    keywords: ['Clannad', 'Angel Beats', 'Your Lie in April', 'AnoHana'],
+                    responses: [
+                        'Clannad y Angel Beats son devastadores emocionalmente. Ten pañuelos listos 😭',
+                        'Your Lie in April es una obra maestra emocional. ¿Estás listo para llorar? 🎵',
+                        'AnoHana te partirá el corazón, pero en la mejor forma. ¿Te atreves? 💔'
+                    ]
+                },
+                'fantasia|magia|sobrenatural': {
+                    keywords: ['Fate', 'Seven Deadly Sins', 'Fire Force', 'Demon Slayer'],
+                    responses: [
+                        '¡Fantasía épica! Fate y Demon Slayer son espectaculares ✨',
+                        'Los animes de magia tienen mundos increíbles. ¿Prefieres europeo o asiático? 🧙',
+                        'Seven Deadly Sins tiene una mitología fascinante. ¿Te atrae la fantasía? ⚔️'
+                    ]
+                },
+                'sci.?fi|ciencia|futura|robot': {
+                    keywords: ['Ghost in the Shell', 'Steins;Gate', 'Neon Genesis Evangelion'],
+                    responses: [
+                        'Ghost in the Shell es un clásico de sci-fi. ¿Te gustan las historias con IA? 🤖',
+                        'Steins;Gate tiene un viaje temporal increíble. ¡La trama es genial! ⏰',
+                        'Neon Genesis Evangelion es profunda y perturbadora. ¿Tienes paciencia? 🌌'
+                    ]
+                },
+                'recomend|sugier|cual|mejor|ver': {
+                    keywords: [],
+                    responses: [
+                        '¿Qué tipo de anime te gusta? Cuéntame: ¿acción, romance, comedia, drama, horror? 📺',
+                        'Depende de tus gustos. ¿Qué género te atrae más? 🎬',
+                        '¿Qué emociones buscas en un anime? Así puedo recomendarte el perfecto 💡'
+                    ]
+                },
+                'personaje|favorito|idol|crush': {
+                    keywords: [],
+                    responses: [
+                        '¡Los personajes de anime son increíbles! ¿Cuál es tu favorito? 😍',
+                        'Los personajes bien desarrollados hacen grandes animes. ¿Tienes un ídolo? ⭐',
+                        '¿Cuál es ese personaje que te enamoró? ¡Cuéntame! 💕'
+                    ]
+                },
+                'manga|light.?novel|visual.?novel': {
+                    keywords: [],
+                    responses: [
+                        '¿Lees manga también? Algunos animes son adaptaciones increíbles 📚',
+                        'Las light novels tienen historias fascinantes. ¿Prefieres manga o anime? 📖',
+                        'Muchos animes provienen de novelas visuales. ¿Eres fan de esas? 🎮'
+                    ]
+                },
+                'estudio|creador|director|seiyuu': {
+                    keywords: ['Studio Ghibli', 'Kyoto Animation', 'MAPPA', 'A-1 Pictures'],
+                    responses: [
+                        'Studio Ghibli es legendario. ¿Cuál es tu película favorita? 🎬',
+                        'Kyoto Animation hace animación hermosa. ¿Tienes favorito de ellos? 🎨',
+                        'MAPPA está rompiendo records últimamente. ¿Qué te parece? 🔥'
+                    ]
+                },
+                'ending|op|opening|soundtrack': {
+                    keywords: [],
+                    responses: [
+                        '¡La música de anime es genial! ¿Cuál es tu opening favorito? 🎵',
+                        'Los endings a veces son más memorables que el anime. ¿Tienes alguno especial? 🎶',
+                        'Las soundtracks de anime merecen más reconocimiento. ¿Cuál te persigue? 🎼'
+                    ]
+                }
+            };
+
+            function getSmartResponse(userMessage) {
+                const lowerMessage = userMessage.toLowerCase();
+                
+                // Buscar coincidencias de palabras clave
+                for (const [keywords, data] of Object.entries(knowledgeBase)) {
+                    const keywordArray = keywords.split('|');
+                    for (const keyword of keywordArray) {
+                        const regex = new RegExp(`\\b${keyword}\\b`, 'i');
+                        if (regex.test(userMessage)) {
+                            // Encontró coincidencia
+                            const responses = data.responses;
+                            return responses[Math.floor(Math.random() * responses.length)];
+                        }
+                    }
+                }
+                
+                // Respuestas genéricas si no hay coincidencia
+                const genericResponses = [
+                    '¡Interesante! Cuéntame más sobre eso 👂',
+                    '¿De verdad? Eso suena emocionante 😃',
+                    'Me encanta tu perspectiva. ¿Hay más? 💭',
+                    'Totalmente de acuerdo contigo 👍',
+                    '¡Excelente punto! No lo había considerado así 🤔',
+                    '¿Eso incluye a mi favorito? ⭐',
+                    'Ese es el tipo de contenido que amo 🔥',
+                    'Fan también. Comparte más de tus opiniones 📢'
+                ];
+                
+                return genericResponses[Math.floor(Math.random() * genericResponses.length)];
+            }
+
+            function addMessage(text, isUser) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `chat-message ${isUser ? 'user' : 'bot'}`;
+                
+                const avatar = document.createElement('div');
+                avatar.className = 'chat-avatar';
+                avatar.textContent = isUser ? '👤' : '🤖';
+                
+                const bubble = document.createElement('div');
+                bubble.className = 'chat-bubble';
+                bubble.textContent = text;
+                
+                messageDiv.appendChild(avatar);
+                messageDiv.appendChild(bubble);
+                
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function sendMessage() {
+                const text = chatInput.value.trim();
+                if (!text) return;
+                
+                // Agregar mensaje del usuario
+                addMessage(text, true);
+                chatInput.value = '';
+                
+                // Generar respuesta inteligente del bot después de 500ms
+                setTimeout(() => {
+                    const smartResponse = getSmartResponse(text);
+                    addMessage(smartResponse, false);
+                }, 500);
+            }
+
+            chatSend.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+        })();
+    </script>
 </body>
 </html>
