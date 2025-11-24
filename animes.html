@@ -83,6 +83,49 @@
             margin-bottom: 15px;
         }
 
+        /* Submenu en la navegación */
+        .has-submenu { position: relative; }
+        .submenu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 200px;
+            background: var(--color-white);
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+            display: none;
+            list-style: none;
+            padding: 0.5rem 0;
+            z-index: 200;
+        }
+        .submenu li a {
+            display: block;
+            padding: 8px 16px;
+            color: var(--color-text);
+            font-weight: 700;
+        }
+        .submenu li a:hover { background: rgba(177,3,2,0.04); color: var(--color-primary); }
+        .has-submenu:hover > .submenu { display: block; }
+
+        /* Mobile: permitir que el submenu se abra con clase .open */
+        .has-submenu.open > .submenu { display: block; }
+
+        /* H2 toggleable (colapsable) */
+        .toggleable { cursor: pointer; display: inline-block; position: relative; }
+        .toggleable::after {
+            content: '▾';
+            display: inline-block;
+            margin-left: 10px;
+            transition: transform 0.25s ease;
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+        }
+        section.collapsed .toggleable::after { transform: rotate(-90deg); }
+        section.collapsed .anime-list,
+        section.collapsed p.muted {
+            display: none;
+        }
+
         h3 {
             font-size: 1.25rem;
             color: var(--color-text);
@@ -116,6 +159,68 @@
 
         section {
             margin-bottom: 3rem;
+        }
+
+        /* ANIMACIONES SCROLL REVEAL */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mejoras de contraste y transiciones */
+        a {
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        a:hover {
+            text-shadow: 0 2px 4px rgba(177, 3, 2, 0.2);
+        }
+
+        .card {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+        }
+
+        .card:hover {
+            filter: brightness(1.02) !important;
         }
 
         /* 3. BARRA DE NAVEGACIÓN (SOBREESCRIBIENDO MATERIALIZE) */
@@ -467,9 +572,18 @@
                 <span></span><span></span><span></span>
             </label>
             <ul class="nav-menu">
-                <li><a href="index.html">Inicio</a></li> 
+                <li><a href="index.html">Inicio</a></li>
                 <li><a href="blog.html">Blog</a></li>
-                <li><a href="animes.html" class="active">Animes</a></li>
+                <li class="has-submenu">
+                    <a href="animes.html" class="active" aria-haspopup="true" aria-expanded="false">Animes ▾</a>
+                    <ul class="submenu" aria-label="Subcategorías de Animes">
+                        <li><a href="animes.html#shonen">Shōnen</a></li>
+                        <li><a href="animes.html#shoujo">Shōjo</a></li>
+                        <li><a href="animes.html#seinen">Seinen</a></li>
+                        <li><a href="animes.html#josei">Josei</a></li>
+                        <li><a href="animes.html#mecha">Mecha</a></li>
+                    </ul>
+                </li>
                 <li><a href="movies.html">Movies</a></li>
                 <li><a href="reviews.html">Reviews</a></li>
                 <li><a href="recommendations.html">Recommendations</a></li>
@@ -478,10 +592,10 @@
     </nav>
 
     <div class="container">
-        <h1>Animes</h1>
+        <h1 class="reveal">Animes</h1>
 
-        <section>
-            <h2>Shōnen</h2>
+        <section class="reveal">
+            <h2 id="shonen" class="toggleable">Shōnen</h2>
             <p class="muted">Para adolescentes varones: acción, aventuras y amistad.</p>
             <div class="anime-list">
                 <div class="anime-card">
@@ -517,8 +631,8 @@
             </div>
         </section>
 
-        <section>
-            <h2>Shōjo</h2>
+        <section class="reveal">
+            <h2 id="shoujo" class="toggleable">Shōjo</h2>
             <p class="muted">Para adolescentes mujeres: romance, drama y relaciones.</p>
             <div class="anime-list">
                 <div class="anime-card">
@@ -554,8 +668,8 @@
             </div>
         </section>
 
-        <section>
-            <h2>Seinen</h2>
+        <section class="reveal">
+            <h2 id="seinen" class="toggleable">Seinen</h2>
             <p class="muted">Para adultos: tramas más complejas y maduras.</p>
             <div class="anime-list">
                 <div class="anime-card">
@@ -591,8 +705,8 @@
             </div>
         </section>
 
-        <section>
-            <h2>Josei</h2>
+        <section class="reveal">
+            <h2 id="josei" class="toggleable">Josei</h2>
             <p class="muted">Para mujeres adultas: historias realistas y románticas.</p>
             <div class="anime-list">
                 <div class="anime-card">
@@ -629,7 +743,7 @@
         </section>
 
         <section>
-            <h2>Mecha</h2>
+            <h2 id="mecha" class="toggleable">Mecha</h2>
             <p class="muted">Anime donde los protagonistas usan robots gigantes.</p>
             <div class="anime-list">
                 <div class="anime-card">
@@ -709,5 +823,96 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+    <script>
+        // Submenu (mobile toggle) y colapsables para secciones
+        (function(){
+            document.addEventListener('DOMContentLoaded', function(){
+                // Toggle submenu en móviles
+                const submenuLink = document.querySelector('.has-submenu > a');
+                if(submenuLink){
+                    submenuLink.addEventListener('click', function(e){
+                        if(window.innerWidth <= 992){
+                            e.preventDefault();
+                            const wrapper = submenuLink.parentElement;
+                            const opened = wrapper.classList.toggle('open');
+                            submenuLink.setAttribute('aria-expanded', opened ? 'true' : 'false');
+                        }
+                    });
+                }
+
+                // Cerrar submenu al hacer click fuera (útil en móvil)
+                document.addEventListener('click', function(ev){
+                    const hs = document.querySelector('.has-submenu');
+                    if(!hs) return;
+                    if(!hs.contains(ev.target)){
+                        hs.classList.remove('open');
+                        const a = hs.querySelector('a');
+                        if(a) a.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                // Hacer que todos los h2 dentro de .container actúen como toggles
+                const sections = document.querySelectorAll('.container section');
+                sections.forEach(section => {
+                    const h2 = section.querySelector('h2');
+                    if(!h2) return;
+                    h2.setAttribute('tabindex', '0');
+                    h2.setAttribute('role', 'button');
+                    h2.setAttribute('aria-expanded', 'true');
+                    h2.classList.add('toggleable');
+
+                    h2.addEventListener('click', () => {
+                        const collapsed = section.classList.toggle('collapsed');
+                        h2.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+                    });
+
+                    h2.addEventListener('keydown', (e) => {
+                        if(e.key === 'Enter' || e.key === ' '){
+                            e.preventDefault();
+                            h2.click();
+                        }
+                    });
+                });
+            });
+        })();
+    </script>
+
+    <script>
+        // Scroll reveal usando Intersection Observer (compatible y robusto)
+        (function(){
+            const reveals = document.querySelectorAll('.reveal');
+            
+            // Si Intersection Observer está disponible, usar eso (mejor rendimiento)
+            if('IntersectionObserver' in window){
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if(entry.isIntersecting){
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target); // dejar de observar una vez visible
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px' // activar 50px antes de entrar completamente
+                });
+                
+                reveals.forEach(el => observer.observe(el));
+            } else {
+                // Fallback para navegadores antiguos
+                const onScroll = () => {
+                    const windowH = window.innerHeight;
+                    reveals.forEach(el => {
+                        const rect = el.getBoundingClientRect();
+                        if(rect.top < windowH - 80){
+                            el.classList.add('visible');
+                        }
+                    });
+                };
+                window.addEventListener('scroll', onScroll);
+                onScroll(); // ejecutar al cargar
+            }
+        })();
+    </script>
 </body>
 </html>
